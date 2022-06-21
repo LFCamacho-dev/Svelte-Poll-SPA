@@ -14,22 +14,37 @@
 		activeItem = e.detail;
     }
 	
-	let currentPolls = [
-		{
-			id: 1,
-			question: 'Python or Javascript?',
-			answerA: 'Python',
-			answerB: 'Javascript',
-			votesA: 9,
-			votesB: 15,
-		},
-	]
+	// let currentPolls = [
+	// 	{
+	// 		id: 1,
+	// 		question: 'Python or Javascript?',
+	// 		answerA: 'Python',
+	// 		answerB: 'Javascript',
+	// 		votesA: 9,
+	// 		votesB: 15,
+	// 	},
+	// ]
 
 	const newPollEntry = (e) => {
 		const newEntry = e.detail;
 		console.log(newEntry);
 		currentPolls = [newEntry, ...currentPolls];
 		activeItem = "Current Polls";
+	}
+
+	const handleVote = (e) => {
+		const {id, option } = e.detail;
+		let copiedPolls = [...currentPolls];
+		let upvotedPoll = copiedPolls.find((poll) => poll.id == id);
+
+		if(option === 'a') {
+			upvotedPoll.votesA++;
+		} 
+		
+		if (option === 'b') {
+			upvotedPoll.votesB++;
+		}
+		currentPolls = copiedPolls;
 	}
 
 </script>
@@ -44,7 +59,7 @@
 	
 	{#if activeItem === "Current Polls"}
 
-		<PollList {currentPolls}/>
+		<PollList on:vote={handleVote}/>
 		
 		{:else if activeItem === "Add New Poll"}
 		
